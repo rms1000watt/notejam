@@ -1,0 +1,30 @@
+# Docs: https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - $(aws ecr get-login --region us-west-2 --no-include-email)
+      - datetime="$(date +'%Y%m%d%H%M')"
+      - version="$(cat .version)"
+      - git_hash=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - account_id=$(echo $CODEBUILD_BUILD_ARN | cut -d ':' -f 5)
+      - echo $account_id
+      - echo $AWS_REGION
+      - image=${account_id}.dkr.ecr.${AWS_REGION}.amazonaws.com/notejam
+  build:
+    commands:
+      - docker build -t ${image}:latest .
+  post_build:
+    commands:
+      - docker tag ${image}:latest ${image}:${datetime}
+      - docker tag ${image}:latest ${image}:${git_hash}
+      - docker tag ${image}:latest ${image}:${version}
+      - docker push ${image}:latest
+      - docker push ${image}:${datetime}
+      - docker push ${image}:${git_hash}
+      - docker push ${image}:${version}
+      - printf '[{"name":"notejam","imageUri":"%s"}]' ${image}:${version} > imagedefinitions.json
+
+artifacts:
+  files: imagedefinitions.json
