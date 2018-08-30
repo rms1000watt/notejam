@@ -7,19 +7,19 @@ ALLOWED_HOSTS = []
 PROJECT_DIR = "{}/../".format(os.path.dirname(__file__))
 
 ADMINS = (
-    ('Sergey Komar', 'komarserjio@gmail.com'),
+    ('Ryan Smith', 'rms1000watt@acme.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'notejam.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ['MYSQL_DB'],
+        'USER': os.environ['MYSQL_USER'],
+        'PASSWORD': os.environ['MYSQL_PASS'],
+        'HOST': os.environ['MYSQL_HOST'],
+        'PORT': os.environ['MYSQL_PORT'],
     }
 }
 
