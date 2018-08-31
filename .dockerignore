@@ -1,3 +1,5 @@
 .gitignore
 Readme.md
 terraform
+.envrc
+ignore.sh
