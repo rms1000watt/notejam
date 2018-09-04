@@ -12,6 +12,6 @@ phases:
   build:
     commands:
       - echo "Running integration tests"
-      - echo "1. cURL to see if the website is up"
+      - echo "1. cURL to see if the website is running at ${NOTEJAM_SERVER}/${NOTEJAM_PATH}"
       - curl --connect-timeout 5 --max-time 10 --retry-delay 10 --retry-max-time 600 ${NOTEJAM_SERVER}/${NOTEJAM_PATH}
 
