@@ -1,0 +1,17 @@
+# Docs: https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html
+version: 0.2
+
+env:
+  variables:
+    NOTEJAM_PATH: "signin/"
+
+phases:
+  pre_build:
+    commands:
+      - if [[ -z $NOTEJAM_SERVER ]]; then echo "ERROR \$NOTEJAM_SERVER is not defined" && exit 1; fi
+  build:
+    commands:
+      - echo "Running integration tests"
+      - echo "1. cURL to see if the website is up"
+      - curl --connect-timeout 5 --max-time 10 --retry-delay 10 --retry-max-time 600 ${NOTEJAM_SERVER}/${NOTEJAM_PATH}
+
