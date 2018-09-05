@@ -8,7 +8,7 @@ env:
 phases:
   pre_build:
     commands:
-      - if [[ -z $NOTEJAM_SERVER ]]; then echo "ERROR \$NOTEJAM_SERVER is not defined" && exit 1; fi
+      - if ! expr "${NOTEJAM_SERVER}"; then echo "ERROR \$NOTEJAM_SERVER is not defined" && exit 1; fi
   build:
     commands:
       - echo "Running integration tests"
